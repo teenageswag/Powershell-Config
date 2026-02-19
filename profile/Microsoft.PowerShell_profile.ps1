@@ -13,7 +13,10 @@ function Test-CommandExists($Capability) {
 # --- Module Initialization ---
 # Oh My Posh
 if (Test-CommandExists "oh-my-posh") {
-    oh-my-posh init pwsh --config "d:\Development\Oh-My-Posh-Theme\dark-minimal-theme.json" | Invoke-Expression
+    $themePath = Join-Path $HOME ".config/oh-my-posh/dark-minimal-theme.json"
+    if (Test-Path $themePath) {
+        oh-my-posh init pwsh --config $themePath | Invoke-Expression
+    }
 }
 
 # Icons
@@ -51,7 +54,7 @@ function mkcd($Path) {
 }
 
 # Environment
-$env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" +
-            [System.Environment]::GetEnvironmentVariable("PATH","User")
+$env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" +
+[System.Environment]::GetEnvironmentVariable("PATH", "User")
 $env:BAT_THEME = "TwoDark"
 $env:PSConsoleGui_Title = "PowerShell | Minimal Dark"

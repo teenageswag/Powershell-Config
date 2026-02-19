@@ -1,232 +1,85 @@
-# Minimal Dark Theme для PowerShell
+# Minimal Dark PowerShell Config
 
-Минималистичная тёмная тема для Windows Terminal с настроенным Oh My Posh, оптимизированная для комфортной работы в командной строке.
+A minimalist dark theme for Windows Terminal with Oh My Posh, optimized for a clean and efficient CLI experience.
 
-![Minimal Dark Theme](https://via.placeholder.com/800x400/141414/CCB333?text=Minimal+Dark+Theme)
+![Minimal Dark Theme](https://raw.githubusercontent.com/teenageswag/Powershell-Config/main/preview.png)
 
-> Добавьте свой скриншот терминала, заменив ссылку выше
+> [!TIP]
+> This config focuses on readability and minimalism, using a curated dark palette with yellow and green accents.
 
-## 🚀 Быстрый старт
+## ✨ Features
 
-Хотите начать прямо сейчас? См. [QUICKSTART.md](QUICKSTART.md) для установки за 3 шага.
+- **Dark Minimal Theme**: Easy on the eyes, balanced color scheme.
+- **Rich Prompt**: Real-time Git status, user context, and execution time.
+- **Productivity Boost**: Pre-configured aliases (`g`, `l`, `v`, `lg`, etc.) and smart navigation (`zoxide`).
+- **One-Click Install**: Fully automated setup script.
 
-## Описание
+## 🚀 Quick Start (Automated)
 
-Этот проект содержит полную конфигурацию для создания красивого и функционального терминала в Windows:
+The easiest way to get started is to use the automated installation script. It handles dependencies, fonts, and configuration.
 
-- **Тёмная цветовая схема** с акцентом на жёлтый (#CCB333) и зелёный (#73B82E)
-- **Минималистичный промпт** с информацией о пользователе, пути, Git-статусе и времени
-- **Оптимизированный профиль PowerShell** с полезными алиасами и функциями
-- **Настроенный Windows Terminal** с удобными горячими клавишами
+1. **Clone the repository**:
 
-## Зависимости
+   ```powershell
+   git clone https://github.com/teenageswag/Powershell-Config.git
+   cd Powershell-Config
+   ```
 
-Для полноценной работы необходимо установить:
+2. **Run the installer**:
 
-1. **Windows Terminal** - современный терминал для Windows
-2. **PowerShell 7+** - последняя версия PowerShell
-3. **Oh My Posh** - движок для кастомизации промпта
-4. **Nerd Font** - шрифт с иконками (рекомендуется CaskaydiaCove Nerd Font)
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\install.ps1
+   ```
 
-### Опциональные зависимости
+3. **Restart your terminal**.
 
-- **Terminal-Icons** - иконки для файлов и папок в терминале
-- **Zoxide** - умная навигация по директориям
-- **PSReadLine** - улучшенное автодополнение
-- **Neovim** - текстовый редактор (для алиаса `v`)
-- **Lazygit** - TUI для Git (для алиаса `lg`)
+## 🛠️ Manual Installation
 
-## Установка
+If the script fails or you prefer a manual approach, follow these steps:
 
-### 1. Установите Windows Terminal
+### 1. Install Dependencies
 
-```powershell
-winget install Microsoft.WindowsTerminal
-```
-
-### 2. Установите PowerShell 7
+Run these commands in PowerShell:
 
 ```powershell
-winget install Microsoft.PowerShell
-```
-
-### 3. Установите Oh My Posh
-
-```powershell
+# Core engines
 winget install JanDeDobbeleer.OhMyPosh
-```
-
-### 4. Установите Nerd Font
-
-```powershell
-oh-my-posh font install CaskaydiaCove
-```
-
-### 5. Установите опциональные модули
-
-```powershell
-# Terminal Icons
-Install-Module -Name Terminal-Icons -Repository PSGallery -Scope CurrentUser
-
-# PSReadLine (обычно уже установлен)
-Install-Module -Name PSReadLine -Repository PSGallery -Scope CurrentUser -Force
-
-# Zoxide (умная навигация)
 winget install ajeetdsouza.zoxide
-```
 
-### 6. Примените конфигурацию
-
-#### Автоматическая установка (рекомендуется)
-
-Запустите скрипт установки из корня проекта:
-
-```powershell
-.\install.ps1
-```
-
-Скрипт автоматически:
-- Скопирует тему Oh My Posh в нужное место
-- Установит профиль PowerShell
-- Создаст резервную копию настроек Windows Terminal
-- Применит новые настройки
-
-**Важно:** Если скрипт сообщит, что профиль заблокирован:
-1. Закройте ВСЕ окна PowerShell и Windows Terminal
-2. Откройте новое окно PowerShell
-3. Выполните: `.\finish-install.ps1`
-4. Перезапустите Windows Terminal
-
-#### Ручная установка
-
-1. Скопируйте `theme/dark-minimal-theme.json` в удобное место (например, `D:\Development\Oh-My-Posh-Theme\`)
-2. Скопируйте `profile/Microsoft.PowerShell_profile.ps1` в папку профиля PowerShell:
-   ```powershell
-   # Узнайте путь к профилю
-   echo $PROFILE
-   
-   # Скопируйте файл (замените путь на свой)
-   Copy-Item .\profile\Microsoft.PowerShell_profile.ps1 $PROFILE
-   ```
-3. Откройте настройки Windows Terminal (`Ctrl+,`) и замените содержимое на `terminal/settings.json` из проекта
-4. Откройте файл профиля и обновите путь к теме:
-   ```powershell
-   notepad $PROFILE
-   ```
-   Найдите строку с `oh-my-posh init pwsh --config` и замените путь на свой.
-
-### 7. Перезапустите терминал
-
-Закройте и откройте Windows Terminal заново. Готово!
-
-## Возможности
-
-### Алиасы
-
-- `g` → `git`
-- `l`, `ll` → `ls`
-- `v` → `nvim`
-- `py` → `python`
-- `lg` → `lazygit`
-
-### Функции
-
-- `mkcd <путь>` - создать папку и сразу перейти в неё
-
-### Промпт
-
-Отображает:
-- Имя пользователя (жёлтый)
-- Текущий путь (серый)
-- Git-ветку и статус (зелёный)
-- Время (справа, серый)
-
-## Структура проекта
-
-```
-.
-├── theme/                              # Тема Oh My Posh
-│   └── dark-minimal-theme.json        # Конфигурация промпта
-├── profile/                            # Профиль PowerShell
-│   └── Microsoft.PowerShell_profile.ps1
-├── terminal/                           # Настройки Windows Terminal
-│   └── settings.json
-├── install.ps1                         # Скрипт автоматической установки
-├── README.md                           # Документация
-└── LICENSE                             # Лицензия MIT
-```
-
-## Кастомизация
-
-### Изменить цвета
-
-Отредактируйте `theme/dark-minimal-theme.json` - измените значения `foreground` в нужных сегментах.
-
-### Добавить свои алиасы
-
-Откройте профиль PowerShell:
-```powershell
-notepad $PROFILE
-```
-
-Добавьте свои алиасы в секцию `# --- Aliases ---`.
-
-### Изменить шрифт или размер
-
-Откройте настройки Windows Terminal и измените параметры в секции `profiles.defaults.font`.
-
-## Лицензия
-
-MIT License - см. файл [LICENSE](LICENSE)
-
-## Дополнительные материалы
-
-- [Примеры использования](EXAMPLES.md) - подробные примеры и советы
-- [Oh My Posh документация](https://ohmyposh.dev/)
-- [Windows Terminal документация](https://docs.microsoft.com/windows/terminal/)
-
-## Решение проблем
-
-### Тема не применяется после установки
-
-1. Убедитесь, что Oh My Posh установлен:
-   ```powershell
-   oh-my-posh --version
-   ```
-
-2. Проверьте путь к теме в профиле:
-   ```powershell
-   notepad $PROFILE
-   ```
-   Убедитесь, что путь к `dark-minimal-theme.json` правильный.
-
-3. Перезагрузите профиль:
-   ```powershell
-   . $PROFILE
-   ```
-
-### Ошибка "файл заблокирован" при установке
-
-Это нормально - PowerShell использует свой профиль. Решение:
-1. Закройте все окна PowerShell и Terminal
-2. Откройте новое окно PowerShell
-3. Выполните: `.\finish-install.ps1`
-
-### Иконки отображаются как квадраты
-
-Установите Nerd Font:
-```powershell
+# Recommended Font
 oh-my-posh font install CaskaydiaCove
+
+# PowerShell Modules
+Install-Module -Name Terminal-Icons -Scope CurrentUser
+Install-Module -Name PSReadLine -Scope CurrentUser -Force
 ```
 
-Затем выберите этот шрифт в настройках Windows Terminal.
+### 2. Deploy Configuration
 
-### Ошибка выполнения скриптов
+1. **Theme**: Copy `theme/dark-minimal-theme.json` to `$HOME/.config/oh-my-posh/`.
+2. **Profile**: Copy `profile/Microsoft.PowerShell_profile.ps1` to your PowerShell profile location (run `echo $PROFILE` to find it).
+3. **Windows Terminal**: Open settings (`Ctrl+,`), go to the JSON file, and add the "Minimal Dark" scheme from `terminal/settings.json`.
 
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
+## 📂 Project Structure
 
-## Changelog
+- `profile/`: Custom PowerShell profile with aliases and functions.
+- `theme/`: Oh My Posh prompt configuration.
+- `terminal/`: Windows Terminal settings (color scheme & profiles).
+- `install.ps1`: All-in-one automation script.
 
-См. [CHANGELOG.md](CHANGELOG.md) для истории изменений.
+## ⌨️ Useful Aliases
+
+| Alias | Command | Description |
+| :--- | :--- | :--- |
+| `g` | `git` | Git CLI |
+| `l`, `ll` | `ls` | List directory |
+| `v` | `nvim` | Neovim |
+| `lg` | `lazygit` | Git TUI |
+| `mkcd` | `function` | Create & enter directory |
+
+## ⚖️ License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+[Project Repository](https://github.com/teenageswag/Powershell-Config)

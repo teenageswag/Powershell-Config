@@ -30,7 +30,7 @@
             "branch_icon": "\ue725 ",
             "fetch_status": true
           },
-          "template": "[{{ .HEAD }}{{ if .Staging.Changed }} \u25cf{{ end }}{{ if .Working.Changed }} \u2b24{{ end }}] "
+          "template": "[{{ .HEAD }}{{ if or .Working.Changed .Staging.Changed }} ({{ .Working.String }}{{ .Staging.String }}){{ end }}] "
         }
       ]
     },
