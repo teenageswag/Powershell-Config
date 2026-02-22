@@ -4,15 +4,13 @@
 Set-StrictMode -Version Latest
 
 # --- Encoding & Shell Fixes ---
-[Console]::InputEncoding  = [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+[console]::InputEncoding = [console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
-
 function Test-CommandExists($Capability) {
     return (Get-Command $Capability -ErrorAction SilentlyContinue) -ne $null
 }
 
 # --- Module Initialization ---
-
 # Oh My Posh
 if (Test-CommandExists "oh-my-posh") {
     $themePath = Join-Path $HOME ".config/oh-my-posh/dark-minimal-theme.json"
@@ -21,8 +19,8 @@ if (Test-CommandExists "oh-my-posh") {
     }
 }
 
-# Terminal Icons
-if (Get-Module -ListAvailable -Name Terminal-Icons) {
+# Icons
+if (Get-Module -ListAvailable Terminal-Icons) {
     Import-Module Terminal-Icons -ErrorAction SilentlyContinue
 }
 
@@ -31,48 +29,45 @@ if (Test-CommandExists "zoxide") {
     zoxide init powershell | Out-String | Invoke-Expression
 }
 
-# --- PSReadLine (Safe for 5.1 and 7+) ---
-$psrl = Get-Module -ListAvailable -Name PSReadLine |
-        Sort-Object Version -Descending |
-        Select-Object -First 1
+# --- PSReadLine (Robust Version Gate) ---
+if ($PSVersionTable.PSVersion.Major -ge 7) {
 
-if ($psrl) {
+    $loaded = Get-Module PSReadLine
 
-    Import-Module PSReadLine -ErrorAction SilentlyContinue
+    if (-not $loaded) {
+        Import-Module PSReadLine -MinimumVersion 2.1.0 -ErrorAction SilentlyContinue
+        $loaded = Get-Module PSReadLine
+    }
 
-    # Predictive features only in PowerShell 7+ with PSReadLine >= 2.1
-    if ($PSVersionTable.PSVersion.Major -ge 7 -and
-        $psrl.Version -ge [Version]"2.1.0") {
+    if ($loaded -and $loaded.Version -ge [Version]"2.1.0") {
 
-        Set-PSReadLineOption -PredictionSource HistoryAndPlugin
-        Set-PSReadLineOption -PredictionViewStyle ListView
-        Set-PSReadLineOption -Colors @{
-            InlinePrediction = "`e[38;5;8m"
+        if ((Get-Command Set-PSReadLineOption).Parameters.ContainsKey("PredictionSource")) {
+
+            Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+            Set-PSReadLineOption -PredictionViewStyle ListView
+            Set-PSReadLineOption -Colors @{
+                InlinePrediction = "`e[38;5;8m"
+            }
         }
     }
 }
 
 # --- Aliases ---
-Set-Alias g  git
-Set-Alias l  ls
+Set-Alias g git
+Set-Alias l ls
 Set-Alias ll ls
-Set-Alias v  nvim
+Set-Alias v nvim
 Set-Alias py python
 Set-Alias lg lazygit
 
-# --- Utility Functions ---
+# Utility Functions
 function mkcd($Path) {
     New-Item -ItemType Directory -Path $Path -Force | Out-Null
     Set-Location -Path $Path
 }
 
-# --- Environment ---
-$machinePath = [System.Environment]::GetEnvironmentVariable("PATH", "Machine")
-$userPath    = [System.Environment]::GetEnvironmentVariable("PATH", "User")
-
-if ($machinePath -and $userPath) {
-    $env:PATH = "$machinePath;$userPath"
-}
-
+# Environment
+$env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" +
+[System.Environment]::GetEnvironmentVariable("PATH", "User")
 $env:BAT_THEME = "TwoDark"
 $env:PSConsoleGui_Title = "PowerShell | Minimal Dark"
