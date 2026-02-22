@@ -31,7 +31,13 @@ The easiest way to get started is to use the automated installation script. It h
    powershell -ExecutionPolicy Bypass -File .\install.ps1
    ```
 
-3. **Restart your terminal**.
+3. **Run validation**:
+
+   ```powershell
+   .\validate.ps1
+   ```
+
+4. **Restart your terminal**.
 
 ## 🛠️ Manual Installation
 
@@ -66,6 +72,7 @@ Install-Module -Name PSReadLine -Scope CurrentUser -Force
 - `theme/`: Oh My Posh prompt configuration.
 - `terminal/`: Windows Terminal settings (color scheme & profiles).
 - `install.ps1`: All-in-one automation script.
+- `validate.ps1`: Post-install validation report (PASS/WARN/FAIL).
 
 ## ⌨️ Useful Aliases
 
